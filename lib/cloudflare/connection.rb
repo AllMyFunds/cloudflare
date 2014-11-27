@@ -43,7 +43,7 @@ module CloudFlare
       host: 'https://api.cloudflare.com/host-gw.html'
     }
 
-    TIMEOUT = 5 # Default is 5 seconds
+    TIMEOUT = 30 # Default is 30 seconds
 
     # @param api_key [String] user or Host API key.
     # @param email [String] it is for a Client API.
@@ -540,6 +540,7 @@ module CloudFlare
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       http.read_timeout = TIMEOUT
+      http.ca_file = OpenSSL::X509::DEFAULT_CERT_FILE
 
       res = http.request(req)
       out = JSON.parse(res.body)

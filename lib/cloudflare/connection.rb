@@ -540,7 +540,11 @@ module CloudFlare
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       http.read_timeout = TIMEOUT
-      http.ca_file = OpenSSL::X509::DEFAULT_CERT_FILE
+      if File.exists?(OpenSSL::X509::DEFAULT_CERT_FILE)
+        http.ca_file = OpenSSL::X509::DEFAULT_CERT_FILE
+      else
+        http.ca_path = OpenSSL::X509::DEFAULT_CERT_DIR
+      end
 
       res = http.request(req)
       out = JSON.parse(res.body)

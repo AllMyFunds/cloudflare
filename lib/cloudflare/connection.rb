@@ -312,6 +312,7 @@ module CloudFlare
         a: :rec_new,
         z: zone,
         type: "CNAME",
+        name: name,
         content: content,
         ttl: ttl == :auto ? 1 : ttl,
         service_mode: service_mode ? "1" : "0"

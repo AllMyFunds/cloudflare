@@ -301,6 +301,23 @@ module CloudFlare
       })
     end
 
+    def create_cname(zone:, name:, content:, ttl: :auto, service_mode: true)
+      if ttl == :auto || ttl == 1
+        ttl = 1
+      elsif ttl < 120
+        raise "ttl must be between 120 and 86400"
+      end
+
+      send_req({
+        a: :rec_new,
+        z: zone,
+        type: "CNAME",
+        content: target,
+        ttl: ttl == :auto ? 1 : ttl,
+        service_mode: service_mode ? "1" : "0"
+      })
+    end
+
     # This function edits a DNS record for a zone.
     #
     # @see http://www.cloudflare.com/docs/client-api.html#s5.2
